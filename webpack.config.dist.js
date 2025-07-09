@@ -1,15 +1,31 @@
 var webpack = require('webpack');
 
 module.exports = {
+  mode: 'production',
   entry: {
     'with-button': ['./src/facebook-with-button.js'],
     'render-props': ['./src/facebook.js'],
   },
 
   module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ },
-      { test: /\.scss$/, loader: 'css?modules&localIdentName=[local]!postcss!sass' },
+    rules: [
+      { test: /\.js$/, use: 'babel-loader', exclude: /node_modules/ },
+      { 
+        test: /\.scss$/, 
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[local]'
+              }
+            }
+          },
+          'postcss-loader',
+          'sass-loader'
+        ]
+      },
     ],
   },
 
@@ -25,7 +41,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['.js'],
   },
 
   plugins: [
@@ -34,12 +50,5 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production'),
       },
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
   ],
 };
