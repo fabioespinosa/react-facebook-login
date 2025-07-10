@@ -35,7 +35,8 @@ module.exports = {
   },
 
   output: {
-    filename: 'dist/facebook-login-[name].js',
+    path: require('path').resolve(__dirname, 'dist'),
+    filename: 'facebook-login-[name].js',
     libraryTarget: 'umd',
     library: 'FacebookLogin',
   },
